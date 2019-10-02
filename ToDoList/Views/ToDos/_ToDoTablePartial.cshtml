@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ToDoList.Models.ToDo>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div id="progressToDo">
+    <p> @(ViewBag.Percent)%</p>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width:@(Html.AttributeEncode(ViewBag.Percent))%">
+        </div>
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+
+                @Html.CheckBoxFor(modelItem => item.IsDone, new { id = item.Id, @class = "IsChecked" })
+
+            </td>
+            <td>
+                @if (!item.IsDone)
+                {
+                    @Html.DisplayFor(modelItem => item.Description)
+
+                }
+                else
+                {
+
+                    <div class="CompletedTasks">@Html.DisplayFor(modelItem => item.Description) </div>
+                }
+            </td>
+
+            <td>
+
+
+                <a href="" data-id="@item.Id" class="jsDeleteTask"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="~/MyScripts/CheckBoxListener.js"></script>
+<script>
+    $(document).ready(
+        function () {
+    $(".jsDeleteTask").click(function () {
+        var id = $(this).data("id");
+        debugger;
+        $.ajax({
+            url: "/ToDos/Delete/" + id,
+            type: "Post"
+     
+
+        });
+
+    });
+
+        });
+            
+</script>
+
